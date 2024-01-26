@@ -1,0 +1,30 @@
+{
+    "Document": {
+        "Hash": "41e0a7fc732cff63b68a16fced70107cffd22bfca1553d159544591e8d13cb8d",
+        "HashType": "Sha256",
+        "Name": "ForwardPort80",
+        "Owner": "727306279876",
+        "CreatedDate": "2024-01-25T22:02:23.007000+00:00",
+        "Status": "Active",
+        "DocumentVersion": "1",
+        "Parameters": [
+            {
+                "Name": "localPortNumber",
+                "Type": "String",
+                "Description": "(Optional) Port number on local machine to forward traffic to. An open port is chosen at run-time if not provided",
+                "DefaultValue": "0"
+            }
+        ],
+        "PlatformTypes": [
+            "Windows",
+            "Linux",
+            "MacOS"
+        ],
+        "DocumentType": "Session",
+        "SchemaVersion": "1.0",
+        "LatestVersion": "1",
+        "DefaultVersion": "1",
+        "DocumentFormat": "JSON",
+        "Tags": []
+    }
+}

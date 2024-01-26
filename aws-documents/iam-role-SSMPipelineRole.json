@@ -1,0 +1,22 @@
+{
+  "Path": "/",
+  "RoleName": "SSMPipelineRole",
+  "RoleId": "AROA2SVWVDPCBOR42ZVAB",
+  "Arn": "arn:aws:iam::727306279876:role/SSMPipelineRole",
+  "CreateDate": "2024-01-26T21:41:58+00:00",
+  "AssumeRolePolicyDocument": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::727306279876:root"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  },
+  "MaxSessionDuration": 3600,
+  "RoleLastUsed": {}
+}

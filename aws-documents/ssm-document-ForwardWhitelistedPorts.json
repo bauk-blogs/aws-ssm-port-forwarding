@@ -1,0 +1,36 @@
+{
+    "Document": {
+        "Hash": "340fbd8f801c051593382861b5dd3d8f8ce590d38ced28453cef80a9a8178867",
+        "HashType": "Sha256",
+        "Name": "ForwardWhitelistedPorts",
+        "Owner": "727306279876",
+        "CreatedDate": "2024-01-25T22:02:23.020000+00:00",
+        "Status": "Active",
+        "DocumentVersion": "1",
+        "Parameters": [
+            {
+                "Name": "localPortNumber",
+                "Type": "String",
+                "Description": "(Optional) Port number on local machine to forward traffic to. An open port is chosen at run-time if not provided",
+                "DefaultValue": "0"
+            },
+            {
+                "Name": "portNumber",
+                "Type": "String",
+                "Description": "(Optional) Port number to connect to on the instance",
+                "DefaultValue": "443"
+            }
+        ],
+        "PlatformTypes": [
+            "Windows",
+            "Linux",
+            "MacOS"
+        ],
+        "DocumentType": "Session",
+        "SchemaVersion": "1.0",
+        "LatestVersion": "1",
+        "DefaultVersion": "1",
+        "DocumentFormat": "JSON",
+        "Tags": []
+    }
+}

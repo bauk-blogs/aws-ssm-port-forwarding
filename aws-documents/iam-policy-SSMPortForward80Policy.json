@@ -1,0 +1,64 @@
+{
+  "Document": {
+    "Statement": [
+      {
+        "Action": [
+          "ecs:List*",
+          "ecs:Describe*",
+          "ec2:List*",
+          "ec2:Describe*"
+        ],
+        "Effect": "Allow",
+        "Resource": "*"
+      },
+      {
+        "Action": [
+          "ssm:StartSession"
+        ],
+        "Condition": {
+          "StringLike": {
+            "aws:resourceTag/SSMPort80": [
+              "Enabled"
+            ]
+          }
+        },
+        "Effect": "Allow",
+        "Resource": [
+          "arn:aws:ecs:*:727306279876:task/*",
+          "arn:aws:ecs:*:727306279876:instance/*"
+        ]
+      },
+      {
+        "Action": [
+          "ssm:StartSession"
+        ],
+        "Effect": "Allow",
+        "Resource": [
+          "arn:aws:ssm:*:*:document/ForwardPort80"
+        ]
+      },
+      {
+        "Action": [
+          "ssm:StartSession"
+        ],
+        "Effect": "Deny",
+        "Resource": [
+          "arn:aws:ssm:*:*:document/AWS-StartPortForwardingSession*",
+          "arn:aws:ssm:*:*:document/AWS-*"
+        ]
+      },
+      {
+        "Action": [
+          "ssm:TerminateSession",
+          "ssm:ResumeSession"
+        ],
+        "Effect": "Allow",
+        "Resource": "arn:aws:ssm:*:*:session/${aws:userid}-*"
+      }
+    ],
+    "Version": "2012-10-17"
+  },
+  "VersionId": "v1",
+  "IsDefaultVersion": true,
+  "CreateDate": "2024-01-26T21:41:58+00:00"
+}
