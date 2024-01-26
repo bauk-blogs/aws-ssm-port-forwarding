@@ -1,6 +1,6 @@
 # You can attach this policy to the instance that you are trying to access if it does not already have the required permissions to connect to SSM
 resource "aws_iam_policy" "ssm_target" {
-  name = "SSM_target"
+  name = "SSMTarget"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [

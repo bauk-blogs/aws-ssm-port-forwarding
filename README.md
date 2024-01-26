@@ -22,13 +22,13 @@ In the [terraform/](terraform/) folder.
 
 |Terraform File|Description|
 |---|---|
-|iam-instance-policy.yml|Defines a policy that can be attached to instances to allow them enough access for their SSM Agent to connect to the AWS SSM service|
-|iam-policy-specific-ports.tf|Defines a set of IAM policies that can restric entities to only exposing an individual port on a target|
-|iam-policy-whitelisted.tf|Defines an IAM policy that can restrict entities to only expose whitelisted ports on a target|
-|iam-role.tf|Defines an IAM role that can be used to access SSM using the policies defined above|
-|locals.tf|Defines Terraform local variables that are used for the dynamic terraform code|
-|ssm-document-specific-ports.tf|Defines SSM Documents to expose specific ports|
-|ssm-document-whitelisted-ports.tf|Defines an SSM Document to allow the caller to expose a set of whitelisted ports|
+|[iam-ssm-target.tf](terraform/iam-ssm-target.tf)|Defines a policy that can be attached to instances to allow them enough access for their SSM Agent to connect to the AWS SSM service|
+|[iam-policy-specific-ports.tf](terraform/iam-policy-specific-ports.tf)|Defines a set of IAM policies that can restric entities to only exposing an individual port on a target|
+|[iam-policy-whitelisted.tf](terraform/iam-policy-whitelisted.tf)|Defines an IAM policy that can restrict entities to only expose whitelisted ports on a target|
+|[iam-role.tf](terraform/iam-role.tf)|Defines an IAM role that can be used to access SSM using the policies defined above|
+|[locals.tf](terraform/locals.tf)|Defines Terraform local variables that are used for the dynamic terraform code|
+|[ssm-document-specific-ports.tf](terraform/ssm-document-specific-ports.tf)|Defines SSM Documents to expose specific ports|
+|[ssm-document-whitelisted-ports.tf](terraform/ssm-document-whitelisted-ports.tf)|Defines an SSM Document to allow the caller to expose a set of whitelisted ports|
 
 ### AWS Documents
 
@@ -39,13 +39,14 @@ Here is how each one relates to a terraform file above (see the terraform sectio
 
 |AWS JSON Document|Corresponding Terraform File|
 |---|---|
-|iam-policy-SSMPortForward443Policy.json|iam-policy-specific-ports.tf|
-|iam-policy-SSMPortForward80Policy.json|iam-policy-specific-ports.tf|
-|iam-policy-SSMPortForwardWhitelistedPolicy.json|iam-policy-whitelisted.tf|
-|iam-role-SSMPipelineRole.json|iam-role.tf|
-|ssm-document-ForwardPort443.json|ssm-document-specific-ports.tf|
-|ssm-document-ForwardPort80.json|ssm-document-specific-ports.tf|
-|ssm-document-ForwardWhitelistedPorts.json|ssm-document-whitelisted-ports.tf|
+|[iam-policy-SSMTarget.json](aws-documents/iam-policy-SSMTarget.json)|[iam-ssm-target.tf](terraform/iam-ssm-target.tf)|
+|[iam-policy-SSMPortForward443Policy.json](aws-documents/iam-policy-SSMPortForward443Policy.json)|[iam-policy-specific-ports.tf](terraform/iam-policy-specific-ports.tf)|
+|[iam-policy-SSMPortForward80Policy.json](aws-documents/iam-policy-SSMPortForward80Policy.json)|[iam-policy-specific-ports.tf](terraform/iam-policy-specific-ports.tf)|
+|[iam-policy-SSMPortForwardWhitelistedPolicy.json](aws-documents/iam-policy-SSMPortForwardWhitelistedPolicy.json)|[iam-policy-whitelisted.tf](terraform/iam-policy-whitelisted.tf)|
+|[iam-role-SSMPipelineRole.json](aws-documents/iam-role-SSMPipelineRole.json)|[iam-role.tf](terraform/iam-role.tf)|
+|[ssm-document-ForwardPort443.json](aws-documents/ssm-document-ForwardPort443.json)|[ssm-document-specific-ports.tf](terraform/ssm-document-specific-ports.tf)|
+|[ssm-document-ForwardPort80.json](aws-documents/ssm-document-ForwardPort80.json)|[ssm-document-specific-ports.tf](terraform/ssm-document-specific-ports.tf)|
+|[ssm-document-ForwardWhitelistedPorts.json](aws-documents/ssm-document-ForwardWhitelistedPorts.json)|[ssm-document-whitelisted-ports.tf](terraform/ssm-document-whitelisted-ports.tf)|
 
 
 ### Docs
