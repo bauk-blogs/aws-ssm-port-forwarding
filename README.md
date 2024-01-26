@@ -59,5 +59,9 @@ You can ignore the docs folder as it just contains content that is referenced in
 
 In the [scripts/](scripts/) folder.
 
-# TODO
+All of these scripts have a usage/help section that can be accessed by running them with the -h flag. e.g. `./scripts/ssm-port-forward -h`.
+
+|Script|Brief Description|
+|---|---|
+|ssm-port-forward|This script allows you to easily start a port forwarding session, providing details of the ports and target you want to use.|
 

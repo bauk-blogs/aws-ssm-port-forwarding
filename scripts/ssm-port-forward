@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+set -e
+
+### CONFIG
+SSM_DOCUMENT=AWS-StartPortForwardingSession # Can change this to your custom document to lock down what ports are available (e.g. ForwardWhitelistedPorts or ForwardPort443)
+
+USAGE="
+    USAGE:
+
+        # For creating an SSM tunnel to a port on an ECS task
+        ssm-port-forward ecs [cluster] [service] [target port] [local port]
+
+        # For creating an SSM tunnel to a port on an EC2 instance
+        ssm-port-forward ec2 [instance_id] [target port] [local port]
+
+    If any options are not provided, they will be obtained interactively
+    Options must be specified in that order and you cannot omit one (you can have just cluster, but not just service)
+"
+
+### FUNCTIONS
+function error {
+    printf "ERROR: %s" "$@"
+    exit 1
+}
+function set_cluster_name {
+    if [[ "$1" ]]
+    then
+        cluster_name=$1
+        echo "Cluster name: $cluster_name"
+    else
+        echo
+        aws ecs list-clusters | jq -r '.clusterArns[]' | sed 's|.*/| - |'
+        read -p "Chose a cluster name: " cluster_name
+    fi
+}
+function set_service_name {
+    if [[ "$1" ]]
+    then
+        service_name=$1
+        echo "Service name: $service_name"
+    else
+        echo
+        aws ecs list-services --cluster "$cluster_name" | jq -r '.serviceArns[]' | sed 's|.*/| - |'
+        read -p "Chose a service name: " service_name
+    fi
+}
+function set_custom {
+    if [[ "$2" ]]
+    then
+        eval "$1=$2"
+        echo "$1: $2"
+    else
+        read -p "Enter $1: " $1
+    fi
+}
+
+function set_task {
+    task=$(aws ecs list-tasks --cluster "$cluster_name" --service-name "$service_name" | jq -r '.[][]' | sed 's|.*/||')
+    if [[ "$(echo "$task" | wc -l)" -gt 1 ]]
+    then
+        echo "Multiple tasks found, pick one:"
+        echo "$task" | sed "s/^/ - /"
+        read -p "Task: " task
+    elif [[ ! "$task" ]]
+    then
+        error "No tasks found!"
+    else
+        echo "Task: $task"
+    fi
+}
+function start_session {
+    local target="$1"
+    aws ssm start-session --target "$target" --document-name $SSM_DOCUMENT --parameters "{\"portNumber\":[\"$target_port\"],\"localPortNumber\":[\"$local_port\"]}"
+}
+
+### USAGE/HELP
+if [[ "$1" == -h || "$1" == --help ]]
+then
+    echo "$USAGE"
+    exit 3
+fi
+
+### MAIN
+set_custom "target_type" "$1"
+case "$target_type" in
+    ecs|ECS)
+        set_cluster_name "$2"
+        set_service_name "$3"
+        set_custom "target_port" "$4"
+        set_custom "local_port" "$5"
+
+        if [[ ! "$5" ]]
+        then
+            echo
+            echo "Use the following options next time to run without prompts:"
+            echo "ssm-ecs-port-forward $target_type $cluster_name $service_name $target_port $local_port"
+            echo
+        fi
+
+        set_task
+        runtime=$(aws ecs describe-tasks --tasks "$task" --cluster "$cluster_name" | jq -r '.tasks[0].containers[0].runtimeId')
+        echo "Runtime: $runtime"
+
+        start_session "ecs:${cluster_name}_${task}_${runtime}"
+        ;;
+    ec2|EC2)
+        set_custom "instance_id" "$2"
+        set_custom "target_port" "$3"
+        set_custom "local_port" "$4"
+
+        if [[ ! "$4" ]]
+        then
+            echo
+            echo "Use the following options next time to run without prompts:"
+            echo "ssm-ecs-port-forward $target_type $instance_id $target_port $local_port"
+            echo
+        fi
+
+        start_session "$instance_id"
+        ;;
+    h|-h|help|--help)
+        echo "$USAGE"
+        exit 0
+        ;;
+    *)
+        echo "$USAGE"
+        error "Invalid target given ($target_type). Must be ecs or ec2"
+esac
